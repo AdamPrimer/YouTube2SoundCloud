@@ -18,7 +18,9 @@ def requires_auth(ytsc):
     password = request.cookies.get("password")
 
     if not ytsc.authorize(username, password):
-        return redirect('/admin/login')
+        return redirect('admin/login')
+
+    return None
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -30,7 +32,7 @@ def admin_login():
 
         password_hash = ytsc.get_password_hash(username, password)
         if password_hash:
-            resp = make_response(redirect('/admin/playlist'))
+            resp = make_response(redirect('admin/playlist'))
             resp.set_cookie('username', username)
             resp.set_cookie('password', password_hash)
             return resp
@@ -40,14 +42,16 @@ def admin_login():
 @app.route('/admin/playlist', methods=['GET', 'POST'])
 def admin_playlist():
     ytsc = yt2sc.YT2SC()
-    requires_auth(ytsc)
+    resp = requires_auth(ytsc)
+    if resp:
+        return resp
 
     # Insert new Mapping
     if request.method == 'POST':
         yt_list = request.form.get('youtube')
         sc_list = request.form.get('soundcloud')
         ytsc.add_mapping(ytsc.user['username'], yt_list, sc_list)
-        return redirect("/admin/playlist")
+        return redirect("admin/playlist")
 
     yt_lists = ytsc.yt.get_playlists(ytsc.user['youtube_id'])
     sc_lists = ytsc.sc.get_playlists(ytsc.user['soundcloud_id'])
