@@ -22,6 +22,13 @@ def requires_auth(ytsc):
 
     return None
 
+@app.route('/admin/logout', methods=['GET', 'POST'])
+def admin_logout():
+    resp = make_response(redirect('admin/login'))
+    resp.set_cookie('username', '')
+    resp.set_cookie('password', '')
+    return resp
+
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     ytsc = yt2sc.YT2SC()
