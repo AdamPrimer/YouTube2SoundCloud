@@ -40,6 +40,10 @@ class YouTube:
             'key': self.api_key,
         })
         data = req.json()
+
+        if not data['items']:
+            return None
+
         playlist = data['items'][0]
 
         return {

@@ -24,7 +24,10 @@ class SoundCloud:
         return playlists
 
     def get_playlist(self, playlist_id):
-        return self.client.get("/playlists/{}".format(playlist_id))
+        try:
+            return self.client.get("/playlists/{}".format(playlist_id))
+        except Exception:
+            return None
 
     @property
     def client(self):

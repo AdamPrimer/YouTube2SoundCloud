@@ -22,7 +22,12 @@ for username, user in ytsc._config['users'].iteritems():
 
     for m in maps:
         yt_list = ytsc.yt.get_playlist(m['yt_playlist'])
+        if not yt_list:
+            continue
+
         sc_list = ytsc.sc.get_playlist(m['sc_playlist'])
+        if not sc_list:
+            continue
 
         sc_name_map = {k['title']: k for k in sc_list.tracks}
 
