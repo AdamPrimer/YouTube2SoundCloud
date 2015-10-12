@@ -50,7 +50,6 @@ for username, user in ytsc._config['users'].iteritems():
                 i+1, len(transfers), transfer['title']))
 
             ydl_opts = {
-                'verbose': True,
                 'format': 'bestaudio/best',
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
@@ -107,5 +106,5 @@ for username, user in ytsc._config['users'].iteritems():
             # Delete the file from the disk to avoid running out of space
             os.remove(filename)
 
-            sys.stdout.write("Transfered {} of {}: {}\n".format(
+            sys.stdout.write("Transfered {} of {}: {}\n\n".format(
                 i+1, len(transfers), transfer['title']))
