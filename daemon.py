@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import sys
 import yt2sc
 import youtube_dl
@@ -102,6 +103,9 @@ for username, user in ytsc._config['users'].iteritems():
             # PUT the new playlist track listing
             ytsc.sc.client.put(sc_list.uri, playlist={
                 'tracks': map(lambda id: dict(id=id), _tracks)})
+
+            # Delete the file from the disk to avoid running out of space
+            os.remove(filename)
 
             sys.stdout.write("Transfered {} of {}: {}\n".format(
                 i+1, len(transfers), transfer['title']))
