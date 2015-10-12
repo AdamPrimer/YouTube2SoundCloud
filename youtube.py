@@ -5,11 +5,25 @@ class YouTube:
         self.api_base = "https://www.googleapis.com/youtube/v3"
         self.api_key = "AIzaSyDC2ADHHGOsfSUwab4WEBTvZwFsiCMXMYM"
 
+    def get_channel(self, user_id):
+        url = "{}/channels".format(self.api_base)
+        req = requests.get(url, params={
+            'part': 'id',
+            'forUsername': user_id,
+            'key': self.api_key,
+        })
+        data = req.json()
+
+        if data['items']:
+            return data['items'][0]['id']
+        return None
+
     def get_playlists(self, channel_id):
         url = "{}/playlists".format(self.api_base)
         req = requests.get(url, params={
             'part': 'snippet',
             'channelId': channel_id,
+            'maxResults': 50,
             'key': self.api_key,
         })
         data = req.json()
@@ -22,6 +36,7 @@ class YouTube:
         req = requests.get(url, params={
             'part': 'snippet',
             'id': playlist_id,
+            'maxResults': 50,
             'key': self.api_key,
         })
         data = req.json()

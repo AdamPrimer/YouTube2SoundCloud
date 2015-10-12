@@ -22,6 +22,11 @@ def requires_auth(ytsc):
 
     return None
 
+@app.route('/admin/channel/<user>')
+def admin_channel(user):
+    ytsc = yt2sc.YT2SC()
+    return ytsc.yt.get_channel(user_id=user)
+
 @app.route('/admin/logout')
 def admin_logout():
     resp = make_response(redirect('admin/login'))
