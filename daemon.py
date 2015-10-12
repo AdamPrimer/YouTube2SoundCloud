@@ -6,7 +6,7 @@ import youtube_dl
 ytsc = yt2sc.YT2SC()
 
 for username, user in ytsc._config['users'].iteritems():
-    artistised = ytsc.artistize(username, user['password'])
+    authorized = ytsc.authorize(username, user['password'])
 
     username = ytsc.user['username']
 

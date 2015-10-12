@@ -22,7 +22,7 @@ def requires_auth(ytsc):
 
     return None
 
-@app.route('/admin/logout', methods=['GET', 'POST'])
+@app.route('/admin/logout')
 def admin_logout():
     resp = make_response(redirect('admin/login'))
     resp.set_cookie('username', '')
