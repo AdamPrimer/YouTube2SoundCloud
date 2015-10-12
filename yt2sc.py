@@ -66,7 +66,7 @@ class YT2SC:
             yt_playlist=yt_list,
             sc_playlist=sc_list
         )
-        self._session.add(new_person)
+        self._session.add(mapping)
         self._session.commit()
 
     def authorize(self, username, password_hash):
