@@ -58,6 +58,7 @@ for username, user in ytsc._config['users'].iteritems():
                 }, {
                     'key': 'FFmpegMetadata',
                 }],
+                'prefer_ffmpeg': True,
                 'postprocessor_args': [
                     '-metadata',
                     'description={}'.format(transfer['description']),
