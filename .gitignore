@@ -1,0 +1,8 @@
+*.pyc
+*.mp3
+*.swp
+*.un~
+*.db
+.DS_Store
+yt2sc.conf
+env/
