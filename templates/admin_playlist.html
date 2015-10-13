@@ -18,6 +18,8 @@
         <tr>
             <th>YouTube</th>
             <th>SoundCloud</th>
+            <th class='text-center'>Edit</th>
+            <th class='text-center'>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -25,10 +27,10 @@
         <tr>
             <td>{{ item.yt_title }}</td>
             <td>{{ item.sc_title }}</td>
-            <td><a href='playlist/{{ item.id }}/delete'>
-                <button type="button" class="close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button></a></td>
+            <td class='text-center'><a href='playlist/{{ item.id }}/blacklist'>
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></td>
+            <td class='text-center'><a href='playlist/{{ item.id }}/delete'>
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
         </tr>
         {% endfor %}
         </tbody>
