@@ -58,13 +58,10 @@ for username, user in ytsc._config['users'].iteritems():
                 username, i+1, len(transfers), transfer['title']))
 
             ydl_opts = {
+                #'verbose': True,
                 'format': 'bestaudio/best',
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                    'preferredquality': '192',
-                }, {
-                    'key': 'FFmpegMetadata',
                 }],
                 'prefer_ffmpeg': True,
                 'postprocessor_args': [
@@ -73,7 +70,7 @@ for username, user in ytsc._config['users'].iteritems():
                     '-metadata',
                     'artist={}'.format(transfer['artist']),
                     '-metadata',
-                    'album={}'.format(transfer['album'])
+                    'album={}'.format(transfer['album']),
                 ]
             }
 
@@ -86,7 +83,7 @@ for username, user in ytsc._config['users'].iteritems():
 
             # Clean the filename of unallowed characters
             clean_title = result['title'].replace('\\', '_').replace('/', '_').replace(":", " -")
-            filename = "{}-{}.mp3".format(
+            filename = "{}-{}.m4a".format(
                 clean_title, result['id'])
 
             sys.stdout.write("[{}] Uploading {} of {}: {}\n".format(

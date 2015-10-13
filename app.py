@@ -114,6 +114,7 @@ def admin_playlist_edit(mapping_id):
                 if track['artwork_url']:
                     continue
 
+                print track['title']
                 res = ytsc.sc.client.put(track['uri'], track={
                     'artwork_data': open(path, 'rb')
                 })
