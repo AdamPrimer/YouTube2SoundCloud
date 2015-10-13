@@ -11,9 +11,14 @@
     pip install -r requirements.txt
     chmod 0700 daemon.py
     chmod 0700 password_gen.py
-    mv yt2sc.template.conf yt2sc.conf
 
 # Configuration File
+
+First, rename `yt2sc.template.conf` to `yt2sc.conf`
+
+    mv yt2sc.template.conf yt2sc.conf
+
+Then edit this YAML formatted file to include the following information.
 
     "client_id": "" // Your SoundCloud App Client ID
     "client_secret": "" // Your SoundCloud App Client Secret
