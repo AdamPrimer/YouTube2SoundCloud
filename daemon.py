@@ -82,7 +82,7 @@ for username, user in ytsc._config['users'].iteritems():
                 )
 
             # Clean the filename of unallowed characters
-            clean_title = result['title'].replace('\\', '_').replace('/', '_').replace('&', '_')
+            clean_title = result['title'].replace('\\', '_').replace('/', '_').replace(":", " -")
             filename = "{}-{}.mp3".format(
                 clean_title, result['id'])
 

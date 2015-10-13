@@ -51,6 +51,17 @@ def admin_login():
 
     return render_template('admin_login.html')
 
+@app.route('/admin/playlist/<mapping_id>/delete')
+def admin_playlist_delete(mapping_id):
+    ytsc = yt2sc.YT2SC()
+    resp = requires_auth(ytsc)
+    if resp:
+        return resp
+
+    # Remove the mapping
+    ytsc.rm_mapping(mapping_id)
+    return redirect("admin/playlist")
+
 @app.route('/admin/playlist', methods=['GET', 'POST'])
 def admin_playlist():
     ytsc = yt2sc.YT2SC()

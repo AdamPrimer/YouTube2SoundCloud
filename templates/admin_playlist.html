@@ -25,6 +25,10 @@
         <tr>
             <td>{{ item.yt_title }}</td>
             <td>{{ item.sc_title }}</td>
+            <td><a href='playlist/{{ item.id }}/delete'>
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button></a></td>
         </tr>
         {% endfor %}
         </tbody>

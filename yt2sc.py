@@ -52,6 +52,7 @@ class YT2SC:
         mappings = []
         for mapping in _mappings:
             mappings.append({
+                'id': mapping.id,
                 'yt_playlist': mapping.yt_playlist,
                 'sc_playlist': mapping.sc_playlist,
                 'yt_title': yt_map.get(mapping.yt_playlist, "No Title"),
@@ -59,6 +60,7 @@ class YT2SC:
             })
 
         return mappings
+
 
     def add_mapping(self, username, yt_list, sc_list):
         mapping = Mapping(
@@ -68,6 +70,20 @@ class YT2SC:
         )
         self._session.add(mapping)
         self._session.commit()
+
+    def rm_mapping(self, mapping_id):
+        try:
+            mapping = self._session.query(Mapping).filter(
+                Mapping.id == mapping_id).one()
+        except Exception:
+            mapping = None
+
+        if mapping and mapping.user_id == self.user['username']:
+            self._session.delete(mapping)
+            self._session.commit()
+            return True
+
+        return False
 
     def authorize(self, username, password_hash):
         if username not in self._config['users']:
