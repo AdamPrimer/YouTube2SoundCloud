@@ -8,7 +8,7 @@ class SoundCloud:
         self._client_secret = client_secret
         self._opts = kwargs
 
-    def get_playlists(self, username):
+    def get_playlists(self):
         me = self.client.get("/me")
         objs = self.client.get("/users/{}/playlists".format(me.id))
 

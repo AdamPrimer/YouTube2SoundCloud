@@ -66,7 +66,7 @@ def admin_playlist():
         return redirect("admin/playlist")
 
     yt_lists = ytsc.yt.get_playlists(ytsc.user['youtube_id'])
-    sc_lists = ytsc.sc.get_playlists(ytsc.user['soundcloud_id'])
+    sc_lists = ytsc.sc.get_playlists()
 
     maps = ytsc.get_mappings(ytsc.user['username'], yt_lists, sc_lists)
 

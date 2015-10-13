@@ -15,7 +15,7 @@ for username, user in ytsc._config['users'].iteritems():
     yt_lists = ytsc.yt.get_playlists(ytsc.user['youtube_id'])
 
     sys.stdout.write("Fetching SoundCloud Playlists for {}\n".format(username))
-    sc_lists = ytsc.sc.get_playlists(ytsc.user['soundcloud_id'])
+    sc_lists = ytsc.sc.get_playlists()
 
     sys.stdout.write("Mapping YouTube Playlists to SoundCloud Playlists\n")
     maps = ytsc.get_mappings(ytsc.user['username'], yt_lists, sc_lists)
