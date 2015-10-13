@@ -111,11 +111,12 @@ def admin_playlist_edit(mapping_id):
                 'artwork_data': open(path, 'rb')})
 
             for track in sc_list.tracks:
-                print track['title']
+                if track['artwork_url']:
+                    continue
+
                 res = ytsc.sc.client.put(track['uri'], track={
                     'artwork_data': open(path, 'rb')
                 })
-                print res.artwork_url
 
             return redirect("admin/playlist/{}/edit".format(mapping_id))
 
