@@ -9,9 +9,14 @@ from flask import (
     make_response,
     url_for,
 )
+from werkzeug import secure_filename
 import yt2sc
 
+UPLOAD_FOLDER = './uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def requires_auth(ytsc):
     username = request.cookies.get("username")
@@ -21,6 +26,10 @@ def requires_auth(ytsc):
         return redirect('admin/login')
 
     return None
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/admin/channel/<user>')
 def admin_channel(user):
@@ -75,8 +84,10 @@ def admin_playlist():
             yt_lists=yt_lists,
             sc_lists=sc_lists)
 
-@app.route('/admin/playlist/<mapping_id>/blacklist', methods=['GET', 'POST'])
-def admin_playlist_blacklist(mapping_id):
+
+
+@app.route('/admin/playlist/<mapping_id>/edit', methods=['GET', 'POST'])
+def admin_playlist_edit(mapping_id):
     ytsc = yt2sc.YT2SC()
     resp = requires_auth(ytsc)
     if resp:
@@ -88,6 +99,26 @@ def admin_playlist_blacklist(mapping_id):
         return redirect("admin/playlist")
 
     if request.method == 'POST':
+        # If we are uploading a logo
+        f = request.files['logo']
+        if f and allowed_file(f.filename):
+            filename = secure_filename(f.filename)
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            f.save(path)
+
+            sc_list = ytsc.sc.get_playlist(mapping.sc_playlist)
+            ytsc.sc.client.put(sc_list.uri, playlist={
+                'artwork_data': open(path, 'rb')})
+
+            for track in sc_list.tracks:
+                print track['title']
+                res = ytsc.sc.client.put(track['uri'], track={
+                    'artwork_data': open(path, 'rb')
+                })
+                print res.artwork_url
+
+            return redirect("admin/playlist/{}/edit".format(mapping_id))
+
         blist = request.form.getlist('blacklisted[]')
         ytsc.set_blacklist(mapping_id, blist)
         return redirect("admin/playlist")

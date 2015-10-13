@@ -16,6 +16,7 @@ class SoundCloud:
         for obj in objs:
             playlists.append({
                 'id': obj.id,
+                'artwork_url': obj.artwork_url,
                 'description': obj.description,
                 'title': obj.title,
                 'tracks': obj.tracks,
