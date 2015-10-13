@@ -59,7 +59,7 @@ for username, user in ytsc._config['users'].iteritems():
 
             ydl_opts = {
                 #'verbose': True,
-                'format': 'bestaudio/best',
+                'format': 'm4a',
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                 }],
