@@ -21,7 +21,7 @@ class YouTube:
     def get_playlists(self, channel_id):
         url = "{}/playlists".format(self.api_base)
         req = requests.get(url, params={
-            'part': 'snippet',
+            'part': 'snippet,contentDetails',
             'channelId': channel_id,
             'maxResults': 50,
             'key': self.api_key,
