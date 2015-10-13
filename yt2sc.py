@@ -45,9 +45,27 @@ class YT2SC:
     def get_blacklist(self, mapping_id):
         try:
             blacklist = self._session.query(Blacklist).filter(
-                Blaclist.mapping_id == mapping_id).one()
-        except Exception:
+                Blacklist.mapping_id == mapping_id).all()
+        except Exception as e:
             blacklist = None
+
+        return blacklist
+
+    def set_blacklist(self, mapping_id, blacklist):
+        print mapping_id
+        print blacklist
+
+        blist = self.get_blacklist(mapping_id)
+        for item in blist:
+            self._session.delete(item)
+        self._session.commit()
+
+        for item in blacklist:
+            self._session.add(Blacklist(
+                mapping_id=mapping_id,
+                yt_id=item))
+
+        self._session.commit()
 
     def get_mapping(self, mapping_id):
         try:

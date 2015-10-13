@@ -1,0 +1,41 @@
+<html doctype='html'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <style type='text/css'>
+    #admin-playlist-blacklist {
+        width: 800px;
+        margin: 0px auto;
+    }
+    #admin-playlist-blacklist .list-group-item .checkbox {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    </style>
+    <div id='admin-playlist-blacklist'>
+        <div class='page-header'>
+            <h2>Playlist: <small>{{ playlist.title }}</small></h2>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                Select items below in order to avoid syncing them to SoundCloud.
+            </div>
+        </div>
+
+        <form method='POST'>
+            <ul class="list-group">
+            {% for item in playlist['items'] %}
+            <li class="list-group-item">
+                <div class='checkbox'>
+                <label>
+                    <input type='checkbox' name='blacklisted[]' value='{{ item.snippet.resourceId.videoId }}' {% if item.is_blacklisted %}checked='checked'{% endif %} />
+                    {{ item.snippet.title }}
+                </label>
+                </div>
+            </li>
+            {% endfor %}
+            </ul>
+        <button type='submit' class='btn btn-default'>Blacklist Selected Items</button>
+        </form>
+    </div>
+</html>
+

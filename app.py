@@ -87,11 +87,22 @@ def admin_playlist_blacklist(mapping_id):
     if not mapping or mapping.user_id != ytsc.user['username']:
         return redirect("admin/playlist")
 
-    blacklist = ytsc.get_blacklist(mapping_id)
+    if request.method == 'POST':
+        blist = request.form.getlist('blacklisted[]')
+        ytsc.set_blacklist(mapping_id, blist)
+        return redirect("admin/playlist")
+
+    blist = ytsc.get_blacklist(mapping_id)
+    blacklist = {k.yt_id: k for k in blist}
+
     playlist = ytsc.yt.get_playlist(mapping.yt_playlist)
 
+    for item in playlist['items']:
+        yt_id = item['snippet']['resourceId']['videoId']
+        item['is_blacklisted'] = yt_id in blacklist
+
     return render_template('admin_playlist_blacklist.html',
-            playlist=playlist, blacklist=blacklist)
+            playlist=playlist)
 
 @app.route('/admin/playlist/<mapping_id>/delete')
 def admin_playlist_delete(mapping_id):
@@ -105,4 +116,4 @@ def admin_playlist_delete(mapping_id):
     return redirect("admin/playlist")
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5555)
+    app.run(debug=True, port=5000)
