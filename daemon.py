@@ -11,20 +11,23 @@ for username, user in ytsc._config['users'].iteritems():
 
     username = ytsc.user['username']
 
-    sys.stdout.write("Fetching YouTube Playlists for {}\n".format(username))
+    sys.stdout.write("[{}] Fetching List of YouTube Playlists\n".format(username))
     yt_lists = ytsc.yt.get_playlists(ytsc.user['youtube_id'])
 
-    sys.stdout.write("Fetching SoundCloud Playlists for {}\n".format(username))
+    sys.stdout.write("[{}] Fetching List of SoundCloud Playlists\n".format(username))
     sc_lists = ytsc.sc.get_playlists()
 
-    sys.stdout.write("Mapping YouTube Playlists to SoundCloud Playlists\n")
+    sys.stdout.write("[{}] Mapping YouTube Playlists to SoundCloud Playlists\n".format(username))
     maps = ytsc.get_mappings(ytsc.user['username'], yt_lists, sc_lists)
 
-    for m in maps:
+    for j, m in enumerate(maps):
+        sys.stdout.write("[{}] Processing Mapping {} of {}\n".format(username, j+1, len(maps)))
+        sys.stdout.write("[{}] Fetching YouTube Playlist\n".format(username))
         yt_list = ytsc.yt.get_playlist(m['yt_playlist'])
         if not yt_list:
             continue
 
+        sys.stdout.write("[{}] Fetching SoundCloud Playlist\n".format(username))
         sc_list = ytsc.sc.get_playlist(m['sc_playlist'])
         if not sc_list:
             continue
@@ -51,8 +54,8 @@ for username, user in ytsc._config['users'].iteritems():
                 })
 
         for i, transfer in enumerate(transfers):
-            sys.stdout.write("Downloading {} of {}: {}\n".format(
-                i+1, len(transfers), transfer['title']))
+            sys.stdout.write("[{}] Downloading {} of {}: {}\n".format(
+                username, i+1, len(transfers), transfer['title']))
 
             ydl_opts = {
                 'format': 'bestaudio/best',
@@ -86,8 +89,8 @@ for username, user in ytsc._config['users'].iteritems():
             filename = "{}-{}.mp3".format(
                 clean_title, result['id'])
 
-            sys.stdout.write("Uploading {} of {}: {}\n".format(
-                i+1, len(transfers), transfer['title']))
+            sys.stdout.write("[{}] Uploading {} of {}: {}\n".format(
+                username, i+1, len(transfers), transfer['title']))
 
             # Upload the new track and make it downloadable
             track = ytsc.sc.client.post('/tracks', track={
@@ -98,8 +101,8 @@ for username, user in ytsc._config['users'].iteritems():
                 'asset_data': open(filename, 'rb')
             })
 
-            sys.stdout.write("Assigning Playlist {} of {}: {}\n".format(
-                i+1, len(transfers), transfer['title']))
+            sys.stdout.write("[{}] Assigning Playlist {} of {}: {}\n".format(
+                username, i+1, len(transfers), transfer['title']))
 
             # Add the new track id to the list of tracks
             _tracks.append(track.id)
@@ -111,5 +114,5 @@ for username, user in ytsc._config['users'].iteritems():
             # Delete the file from the disk to avoid running out of space
             os.remove(filename)
 
-            sys.stdout.write("Transfered {} of {}: {}\n\n".format(
-                i+1, len(transfers), transfer['title']))
+            sys.stdout.write("[{}] Transfered {} of {}: {}\n\n".format(
+                username, i+1, len(transfers), transfer['title']))
