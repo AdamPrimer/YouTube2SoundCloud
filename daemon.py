@@ -81,10 +81,19 @@ for username, user in ytsc._config['users'].iteritems():
                     download=True,
                 )
 
+            extension_map = {
+                'opus': 'opus',
+                'acc': 'm4a',
+                'mp3': 'mp3',
+                'vorbis': 'ogg',
+            }
+
+            ext = extension_map.get(result['acodec'], 'm4a')
+
             # Clean the filename of unallowed characters
             clean_title = result['title'].replace('\\', '_').replace('/', '_').replace(":", " -")
-            filename = "{}-{}.m4a".format(
-                clean_title, result['id'])
+            filename = "{}-{}.{}".format(
+                clean_title, result['id'], ext)
 
             sys.stdout.write("[{}] Uploading {} of {}: {}\n".format(
                 username, i+1, len(transfers), transfer['title']))
