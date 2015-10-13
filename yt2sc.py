@@ -4,7 +4,7 @@ import youtube
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from db import Base, Mapping
+from db import Base, Mapping, Blacklist
 
 from bcrypt import hashpw, gensalt
 
@@ -42,6 +42,20 @@ class YT2SC:
 
         return self._sc
 
+    def get_blacklist(self, mapping_id):
+        try:
+            blacklist = self._session.query(Blacklist).filter(
+                Blaclist.mapping_id == mapping_id).one()
+        except Exception:
+            blacklist = None
+
+    def get_mapping(self, mapping_id):
+        try:
+            return self._session.query(Mapping).filter(
+                Mapping.id == mapping_id).one()
+        except Exception:
+            return None
+
     def get_mappings(self, username, yt_lists, sc_lists):
         yt_map = {str(x['id']): x['snippet']['title'] for x in yt_lists}
         sc_map = {str(x['id']): x['title'] for x in sc_lists}
@@ -72,11 +86,7 @@ class YT2SC:
         self._session.commit()
 
     def rm_mapping(self, mapping_id):
-        try:
-            mapping = self._session.query(Mapping).filter(
-                Mapping.id == mapping_id).one()
-        except Exception:
-            mapping = None
+        mapping = self.get_mapping(mapping_id)
 
         if mapping and mapping.user_id == self.user['username']:
             self._session.delete(mapping)

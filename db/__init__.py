@@ -14,5 +14,11 @@ class Mapping(Base):
     yt_playlist = Column(String(250), nullable=False)
     sc_playlist = Column(String(250), nullable=False)
 
+class Blacklist(Base):
+    __tablename__ = 'blacklist'
+    id = Column(Integer, primary_key=True)
+    mapping_id = Column(Integer, ForeignKey('mapping.id'))
+    yt_id = Column(String(250), nullable=False)
+
 engine = create_engine('sqlite:///db/yt2sc.db')
 Base.metadata.create_all(engine)

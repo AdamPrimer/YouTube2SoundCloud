@@ -51,17 +51,6 @@ def admin_login():
 
     return render_template('admin_login.html')
 
-@app.route('/admin/playlist/<mapping_id>/delete')
-def admin_playlist_delete(mapping_id):
-    ytsc = yt2sc.YT2SC()
-    resp = requires_auth(ytsc)
-    if resp:
-        return resp
-
-    # Remove the mapping
-    ytsc.rm_mapping(mapping_id)
-    return redirect("admin/playlist")
-
 @app.route('/admin/playlist', methods=['GET', 'POST'])
 def admin_playlist():
     ytsc = yt2sc.YT2SC()
@@ -85,6 +74,35 @@ def admin_playlist():
             maps=maps,
             yt_lists=yt_lists,
             sc_lists=sc_lists)
+
+@app.route('/admin/playlist/<mapping_id>/blacklist', methods=['GET', 'POST'])
+def admin_playlist_blacklist(mapping_id):
+    ytsc = yt2sc.YT2SC()
+    resp = requires_auth(ytsc)
+    if resp:
+        return resp
+
+    mapping = ytsc.get_mapping(mapping_id)
+
+    if not mapping or mapping.user_id != ytsc.user['username']:
+        return redirect("admin/playlist")
+
+    blacklist = ytsc.get_blacklist(mapping_id)
+    playlist = ytsc.yt.get_playlist(mapping.yt_playlist)
+
+    return render_template('admin_playlist_blacklist.html',
+            playlist=playlist, blacklist=blacklist)
+
+@app.route('/admin/playlist/<mapping_id>/delete')
+def admin_playlist_delete(mapping_id):
+    ytsc = yt2sc.YT2SC()
+    resp = requires_auth(ytsc)
+    if resp:
+        return resp
+
+    # Remove the mapping
+    ytsc.rm_mapping(mapping_id)
+    return redirect("admin/playlist")
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
