@@ -125,6 +125,8 @@ class YT2SC:
                 'youtube_id': user['youtube_id'],
                 'soundcloud_id': user['soundcloud_id'],
                 'soundcloud_password': user['soundcloud_password'],
+                'tags': user['tags'],
+                'label': user['label'],
             }
             return True
 
