@@ -2,7 +2,10 @@
 import os
 import sys
 import yt2sc
+import iso8601
 import youtube_dl
+
+TAG_LIST = '"Dungeons and Dragons" "Dungeons & Dragons" D&D DnD "Roleplaying Games" RPG Rollplay Podcast'
 
 ytsc = yt2sc.YT2SC()
 
@@ -98,12 +101,18 @@ for username, user in ytsc._config['users'].iteritems():
             sys.stdout.write("[{}] Uploading {} of {}: {}\n".format(
                 username, i+1, len(transfers), transfer['title']))
 
+            dateParse = iso8601.parse_date(transfer['added'])
+
             # Upload the new track and make it downloadable
             track = ytsc.sc.client.post('/tracks', track={
                 'title': result['title'],
                 'description': result['description'],
                 'downloadable': 'true',
-                'release': transfer['added'],
+                'tag_list': '{} "{}" "{}"'.format(TAG_LIST, username, yt_list['title']),
+                'release_day': dateParse.day,
+                'release_month': dateParse.month,
+                'release_year': dateParse.year,
+                'label_name': 'RegalGoblins',
                 'asset_data': open(filename, 'rb')
             })
 
