@@ -5,8 +5,6 @@ import yt2sc
 import iso8601
 import youtube_dl
 
-TAG_LIST = '"Dungeons and Dragons" "Dungeons & Dragons" D&D DnD "Roleplaying Games" RPG Rollplay Podcast'
-
 ytsc = yt2sc.YT2SC()
 
 for username, user in ytsc._config['users'].iteritems():
@@ -108,11 +106,11 @@ for username, user in ytsc._config['users'].iteritems():
                 'title': result['title'],
                 'description': result['description'],
                 'downloadable': 'true',
-                'tag_list': '{} "{}" "{}"'.format(TAG_LIST, username, yt_list['title']),
+                'tag_list': '{} "{}" "{}"'.format(user['tags'], username, yt_list['title']),
                 'release_day': dateParse.day,
                 'release_month': dateParse.month,
                 'release_year': dateParse.year,
-                'label_name': 'RegalGoblins',
+                'label_name': user['label'],
                 'asset_data': open(filename, 'rb')
             })
 
