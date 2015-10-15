@@ -67,6 +67,8 @@ for username, user in ytsc._config['users'].iteritems():
                 'prefer_ffmpeg': True,
                 'postprocessor_args': [
                     '-metadata',
+                    'title={}'.format(transfer['title']),
+                    '-metadata',
                     'description={}'.format(transfer['description']),
                     '-metadata',
                     'artist={}'.format(transfer['artist']),
