@@ -103,7 +103,7 @@ def admin_playlist_edit(mapping_id):
         f = request.files['logo']
         if f and allowed_file(f.filename):
             _, ext = os.path.splitext(f.filename)
-            filename = secure_filename("{}.{}".format(mapping_id, ext))
+            filename = secure_filename("{}{}".format(mapping_id, ext))
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             f.save(path)
 
@@ -138,7 +138,8 @@ def admin_playlist_edit(mapping_id):
         item['is_blacklisted'] = yt_id in blacklist
 
     return render_template('admin_playlist_blacklist.html',
-            playlist=playlist)
+            playlist=playlist,
+            mapping=mapping)
 
 @app.route('/admin/playlist/<mapping_id>/delete')
 def admin_playlist_delete(mapping_id):
