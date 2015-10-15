@@ -42,6 +42,12 @@ class YT2SC:
 
         return self._sc
 
+    def set_album_art(self, mapping_id, image):
+        m = self.get_mapping(mapping_id)
+        m.album_art = image
+        self._session.add(m)
+        self._session.commit()
+
     def get_blacklist(self, mapping_id):
         try:
             blacklist = self._session.query(Blacklist).filter(
@@ -52,9 +58,6 @@ class YT2SC:
         return blacklist
 
     def set_blacklist(self, mapping_id, blacklist):
-        print mapping_id
-        print blacklist
-
         blist = self.get_blacklist(mapping_id)
         for item in blist:
             self._session.delete(item)
@@ -85,14 +88,16 @@ class YT2SC:
         for mapping in _mappings:
             mappings.append({
                 'id': mapping.id,
+                'album_art': mapping.album_art,
                 'yt_playlist': mapping.yt_playlist,
                 'sc_playlist': mapping.sc_playlist,
                 'yt_title': yt_map.get(mapping.yt_playlist, "No Title"),
                 'sc_title': sc_map.get(mapping.sc_playlist, "No Title"),
             })
 
-        return mappings
+        print mappings
 
+        return mappings
 
     def add_mapping(self, username, yt_list, sc_list):
         mapping = Mapping(

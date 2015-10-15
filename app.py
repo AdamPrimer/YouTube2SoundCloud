@@ -102,13 +102,16 @@ def admin_playlist_edit(mapping_id):
         # If we are uploading a logo
         f = request.files['logo']
         if f and allowed_file(f.filename):
-            filename = secure_filename(f.filename)
+            _, ext = os.path.splitext(f.filename)
+            filename = secure_filename("{}.{}".format(mapping_id, ext))
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             f.save(path)
 
             sc_list = ytsc.sc.get_playlist(mapping.sc_playlist)
-            ytsc.sc.client.put(sc_list.uri, playlist={
-                'artwork_data': open(path, 'rb')})
+            ytsc.set_album_art(mapping_id, path)
+
+            #ytsc.sc.client.put(sc_list.uri, playlist={
+            #    'artwork_data': open(path, 'rb')})
 
             for track in sc_list.tracks:
                 if track['artwork_url']:

@@ -13,6 +13,7 @@ class Mapping(Base):
     user_id = Column(String(250), nullable=False)
     yt_playlist = Column(String(250), nullable=False)
     sc_playlist = Column(String(250), nullable=False)
+    album_art = Column(String(250), nullable=True)
 
 class Blacklist(Base):
     __tablename__ = 'blacklist'

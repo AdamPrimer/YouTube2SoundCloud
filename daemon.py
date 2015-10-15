@@ -113,7 +113,8 @@ for username, user in ytsc._config['users'].iteritems():
                 'release_month': dateParse.month,
                 'release_year': dateParse.year,
                 'label_name': user['label'],
-                'asset_data': open(filename, 'rb')
+                'asset_data': open(filename, 'rb'),
+                'artwork_data': open(m['album_art'], 'rb'),
             })
 
             sys.stdout.write("[{}] Assigning Playlist {} of {}: {}\n".format(
