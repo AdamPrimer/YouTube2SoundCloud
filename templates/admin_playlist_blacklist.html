@@ -16,7 +16,7 @@
         </div>
 
         <ol class="breadcrumb">
-            <li><a href="../../playlist">Playlists</a></li>
+            <li><a href="/koibu/playlist">Playlists</a></li>
             <li class="active">Edit</li>
         </ol>
 
@@ -27,7 +27,7 @@
         <form method='POST' enctype='multipart/form-data'>
             <div class="panel panel-default">
                 {% if mapping.album_art %}
-                    <img src='{{ mapping.album_art }}' width='200px' height='200px' />
+                    <img src='/koibu/{{ mapping.album_art }}' width='200px' height='200px' />
                 {% endif %}
                 <div class="panel-body">
                     <div class='form-group'>
