@@ -25,11 +25,13 @@
         </div>
 
         <form method='POST' enctype='multipart/form-data'>
-            <div class="panel panel-default">
+            <div class="panel panel-default media">
                 {% if mapping.album_art %}
+                <div class='media-left'>
                     <img src='/koibu/{{ mapping.album_art }}' width='200px' height='200px' />
+                </div>
                 {% endif %}
-                <div class="panel-body">
+                <div class="panel-body media-body">
                     <div class='form-group'>
                         <label for='logo'>Logo</label>
                         <input type='file' id='logo' name='logo' />
