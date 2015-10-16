@@ -12,7 +12,7 @@ from flask import (
 from werkzeug import secure_filename
 import yt2sc
 
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -84,8 +84,6 @@ def admin_playlist():
             yt_lists=yt_lists,
             sc_lists=sc_lists)
 
-
-
 @app.route('/admin/playlist/<mapping_id>/edit', methods=['GET', 'POST'])
 def admin_playlist_edit(mapping_id):
     ytsc = yt2sc.YT2SC()
@@ -104,7 +102,7 @@ def admin_playlist_edit(mapping_id):
         if f and allowed_file(f.filename):
             _, ext = os.path.splitext(f.filename)
             filename = secure_filename("{}{}".format(mapping_id, ext))
-            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            path = os.path.join(app.config['UPLOAD_FOLDER'], 'albums', filename)
             f.save(path)
 
             sc_list = ytsc.sc.get_playlist(mapping.sc_playlist)
