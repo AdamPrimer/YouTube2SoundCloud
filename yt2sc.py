@@ -1,7 +1,10 @@
-import os
 import yaml
 import soundc
 import youtube
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from db import Base, Mapping, Blacklist
 
 from bcrypt import hashpw, gensalt
 
@@ -10,13 +13,6 @@ class YT2SC:
         # Get the configuration data
         with open(config_path, 'r') as fp:
             self._config = yaml.safe_load(fp)
-
-        if os.path.exists(self._config['remote_path']):
-            os.chdir(self._config['remote_path'])
-
-        from sqlalchemy import create_engine
-        from sqlalchemy.orm import sessionmaker
-        from db import Base, Mapping, Blacklist
 
         # Connect to the DB
         engine = create_engine('sqlite:///db/yt2sc.db')
