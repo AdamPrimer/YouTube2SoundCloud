@@ -1,3 +1,4 @@
+import os
 import yaml
 import soundc
 import youtube
